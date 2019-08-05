@@ -39,7 +39,9 @@ SECRET_KEY = 'i-cj+m#t+!rv6x4t1(2r^zt@@p4&x7pv)=of0xh-a6w&vs-e(1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 
-ALLOWED_HOSTS = []
+ALLOWED_HOSTS=[
+os.environ.get('OPENSHIFT_DNS', '*')
+]
 
 
 # Application definition
@@ -130,6 +132,9 @@ USE_TZ = True
 # https://docs.djangoproject.com/en/2.2/howto/static-files/
 
 STATIC_URL = '/static/'
+MEDIA_ROOT = '/data/'
+MEDIA_URL='/media/'
+
 
 MIGRATION_MODULES_LIST = ['core']
 MIGRATION_MODULES = {}
