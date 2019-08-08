@@ -8,4 +8,4 @@ WORKDIR /code
 ADD requirements.txt /code/
 RUN pip install -r requirements.txt
 COPY . /code/
-ENTRYPOINT /code/init.sh
+#ENTRYPOINT "./wait-for-it.sh db:5432 -- ./init.sh"
