@@ -1,5 +1,6 @@
 django==2.1.2
 djangorestframework
+django-oauth-toolkit
 django-model-utils
 requests
 flake8

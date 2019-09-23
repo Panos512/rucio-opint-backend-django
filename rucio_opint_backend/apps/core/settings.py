@@ -11,19 +11,20 @@ https://docs.djangoproject.com/en/2.2/ref/settings/
 """
 
 import os
+import sys
 
 MIGRATIONS_STORE_MODULE = 'migrations'
 MIGRATIONS_STORE_PATH = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
 
-# # Load local configuration
-# try:
-#     from settings_local import config, DEBUG
-#     DEBUG = str(os.environ.get('DJANGO_DEBUG', DEBUG)).lower() in ['true', '1']
-#     vars().update(config)
-# except ImportError as e:
-#     msg = "File settings_local.py not found or incomplete.\nError: %s" % e
-#     print('sys.path=', sys.path, 'PWD=', os.getcwd())
-#     raise Exception(msg)
+# Load local configuration
+try:
+    from settings_local import config, DEBUG
+    DEBUG = str(os.environ.get('DJANGO_DEBUG', DEBUG)).lower() in ['true', '1']
+    vars().update(config)
+except ImportError as e:
+    msg = "File settings_local.py not found or incomplete.\nError: %s" % e
+    print('sys.path=', sys.path, 'PWD=', os.getcwd())
+    raise Exception(msg)
 
 # Build paths inside the project like this: os.path.join(BASE_DIR, ...)
 BASE_DIR = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
@@ -39,23 +40,23 @@ SECRET_KEY = 'i-cj+m#t+!rv6x4t1(2r^zt@@p4&x7pv)=of0xh-a6w&vs-e(1'
 
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
-DATABASES = {
-    'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': 'rucio_opint',
-            'USER': 'admin',
-            'PASSWORD': os.environ.get('DB_PASS'),
-            'USER_CREATE': 'cric',
-            'PASSWORD_CREATE': os.environ.get('DB_PASS'),
-            'HOST': 'dbod-rucio-opint.cern.ch',
-            'PORT': '5501',
-            'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    }
-    # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': 'rucio_opint',
-    # }
-}
+# DATABASES = {
+#     'default': {
+#             'ENGINE': 'django.db.backends.mysql',
+#             'NAME': 'rucio_opint',
+#             'USER': 'admin',
+#             'PASSWORD': os.environ.get('DB_PASS'),
+#             'USER_CREATE': 'cric',
+#             'PASSWORD_CREATE': os.environ.get('DB_PASS'),
+#             'HOST': 'dbod-rucio-opint.cern.ch',
+#             'PORT': '5501',
+#             'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
+#     }
+#     # 'default': {
+#     #     'ENGINE': 'django.db.backends.sqlite3',
+#     #     'NAME': 'rucio_opint',
+#     # }
+# }
 
 
 # Application definition
@@ -73,7 +74,9 @@ INSTALLED_APPS = [
     'rucio_opint_backend.apps.core',
     'rucio_opint_backend.apps.api',
     'rucio_opint_backend.apps.crons',
-    'rucio_opint_backend.apps.utils'
+    'rucio_opint_backend.apps.utils',
+    'rucio_opint_backend.apps.users',
+    'oauth2_provider'
 ]
 
 MIDDLEWARE = [
@@ -165,6 +168,9 @@ if '.' not in MIGRATIONS_STORE_MODULE and MIGRATIONS_STORE_MODULE:  # create dir
 
 # RestFramework config
 REST_FRAMEWORK = {
+    'DEFAULT_AUTHENTICATION_CLASSES': (
+        'oauth2_provider.contrib.rest_framework.OAuth2Authentication',
+    ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100
 }
