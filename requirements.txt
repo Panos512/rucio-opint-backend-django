@@ -9,3 +9,4 @@ six
 django-cors-headers
 mysqlclient
 pyspark
+django-allauth
