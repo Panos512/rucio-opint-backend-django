@@ -1,3 +1,5 @@
+## PROJECT HAS BEEN MOVED TO: https://github.com/operationalintelligence/rucio-opint-backend 
+
 [![Build Status](https://travis-ci.com/Panos512/rucio-opint-backend-django.svg?token=9WE9v7qSHUzbjJweTfrs&branch=master)](https://travis-ci.com/Panos512/rucio-opint-backend-django)
 
 ## Description
