@@ -27,21 +27,21 @@ SECRET_KEY = 'i-cj+m#t+!rv6x4t1(2r^zt@@p4&x7pv)=of0xh-a6w&vs-e(1'
 # SECURITY WARNING: don't run with debug turned on in production!
 DEBUG = True
 DATABASES = {
-    'default': {
-            'ENGINE': 'django.db.backends.mysql',
-            'NAME': os.environ.get('DB_NAME'),
-            'USER': 'admin',
-            'PASSWORD': os.environ.get('DB_PASS'),
-            'USER_CREATE': 'cric',
-            'PASSWORD_CREATE': os.environ.get('DB_PASS'),
-            'HOST': 'dbod-rucio-opint.cern.ch',
-            'PORT': '5501',
-            'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
-    }
     # 'default': {
-    #     'ENGINE': 'django.db.backends.sqlite3',
-    #     'NAME': 'rucio_opint',
+    #         'ENGINE': 'django.db.backends.mysql',
+    #         'NAME': os.environ.get('DB_NAME'),
+    #         'USER': 'admin',
+    #         'PASSWORD': os.environ.get('DB_PASS'),
+    #         'USER_CREATE': 'cric',
+    #         'PASSWORD_CREATE': os.environ.get('DB_PASS'),
+    #         'HOST': 'dbod-rucio-opint.cern.ch',
+    #         'PORT': '5501',
+    #         'OPTIONS': {'init_command': "SET sql_mode='STRICT_TRANS_TABLES'"}
     # }
+    'default': {
+        'ENGINE': 'django.db.backends.sqlite3',
+        'NAME': 'rucio_opint',
+    }
 }
 STATIC_URL = '/static/'
 STATIC_ROOT = os.path.join(BASE_DIR, 'staticfiles')
@@ -57,14 +57,24 @@ INSTALLED_APPS = [
     'django.contrib.messages',
     'django.contrib.staticfiles',
     'rest_framework',
+    'rest_framework.authtoken',
+    'rest_auth',
+    'django.contrib.sites',
+    'allauth',
+    'allauth.account',
+    'rest_auth.registration',
     'filters',
     'corsheaders',
     'rucio_opint_backend.apps.core',
     'rucio_opint_backend.apps.users',
     'rucio_opint_backend.apps.api',
     'rucio_opint_backend.apps.crons',
-    'rucio_opint_backend.apps.utils'
+    'rucio_opint_backend.apps.utils',
+    'allauth.socialaccount',
+    'allauth.socialaccount.providers.cern',
 ]
+
+SITE_ID = 1
 
 MIDDLEWARE = [
     'corsheaders.middleware.CorsMiddleware',
@@ -140,21 +150,8 @@ STATIC_URL = '/static/'
 
 # RestFramework config
 REST_FRAMEWORK = {
-    'DEFAULT_PERMISSION_CLASSES': (
-        #  vv'rest_framework.permissions.IsAuthenticated',
-    ),
-    'DEFAULT_AUTHENTICATION_CLASSES': (
-        'rest_framework_jwt.authentication.JSONWebTokenAuthentication',
-        'rest_framework.authentication.SessionAuthentication',
-        'rest_framework.authentication.BasicAuthentication',
-    ),
     'DEFAULT_PAGINATION_CLASS': 'rest_framework.pagination.PageNumberPagination',
     'PAGE_SIZE': 100
-}
-
-# JWT Auth Settings
-JWT_AUTH = {
-    'JWT_RESPONSE_PAYLOAD_HANDLER': 'rucio_opint_backend.apps.users.utils.my_jwt_response_handler'
 }
 
 
